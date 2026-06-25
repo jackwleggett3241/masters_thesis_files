@@ -1,0 +1,65 @@
+---
+title: "White_Female_NH"
+author: "JWL"
+format: html
+editor: visual
+embed-resources: TRUE
+echo: TRUE 
+---
+
+```{r}
+library(readr)
+
+
+```
+
+```{r}
+decedents <- read_csv("D:/JACK_THESIS_PROJECT/female_White_NH/METADATA/COMBINED_CSVs/decedents.csv")
+View(decedents)
+```
+
+#### Summary Statistics (White Non-Hispanic Females)
+
+```{r}
+summary(decedents$age_years)
+```
+
+The White non-Hispanic females range in age from 19-99 years old with a mean age of 57.70 years.
+
+#### How does the age-at-death distribution for this group appear? 
+
+```{r}
+library(ggplot2)
+age_death_counts <- ggplot(decedents, aes(x = age_years)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "black") +
+  labs(title = "Counts by Age in Years (White NH Females)", x = "Age in years", y = "Count") + 
+scale_x_continuous(
+    breaks = seq(15, 100, 5)) +
+scale_y_continuous(breaks = seq(0, 15, by = 1))
+age_death_counts
+```
+
+##### Same plot but with a density plot overlaid:
+
+```{r}
+age_death_counts2 <- ggplot(decedents, aes(x = age_years)) +
+  geom_histogram(binwidth = 1, fill = "orange", color = "black") +
+  geom_density(
+    aes(y = after_stat(density * nrow(decedents) * 1)),
+    color = "steelblue",
+    alpha = 0.5,
+    adjust = 0.65
+  ) +
+  labs(
+    title = "Counts by Age in Years (White NH Females)",
+    x = "Age in years",
+    y = "Count"
+  ) +
+  scale_x_continuous(breaks = seq(15, 100, by = 5)) +
+  scale_y_continuous(
+    limits = c(0, 15),
+    breaks = seq(0, 15, by = 1)
+  )
+  
+age_death_counts2
+```
